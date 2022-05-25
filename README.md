@@ -2,4 +2,6 @@
 
 ## About
 
+## How to run
+
 ## Technology
