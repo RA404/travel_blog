@@ -3,7 +3,8 @@ from django.http import HttpResponse, HttpRequest
 
 
 def index(request: HttpRequest) -> HttpResponse:
-    return HttpResponse('Main page')
+    template = 'posts/index.html'
+    return render(request, template)
 
 
 def country_posts(request: HttpRequest, slug) -> HttpResponse:
