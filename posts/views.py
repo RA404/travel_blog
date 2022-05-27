@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponse, HttpRequest
+from typing import Dict
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -8,4 +9,8 @@ def index(request: HttpRequest) -> HttpResponse:
 
 
 def country_posts(request: HttpRequest, slug) -> HttpResponse:
-    return HttpResponse(f'Countries posts {slug}')
+    templates = 'posts/country_posts.html'
+    context: Dict[str, str] = {
+        'country_name': slug,
+    }
+    return render(request, templates, context)
