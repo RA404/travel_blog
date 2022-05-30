@@ -1,0 +1,14 @@
+<article>
+    <ul>
+        <li>
+            Author: {{ post.author }}
+        </li>
+        <li>
+            Date: {{ post.pub_date|date:"d.m.Y" }}
+        </li>
+    </ul>
+    <p>
+        {{ post.text }}
+    </p>
+    <a href="{% url 'travel_posts:country_posts' post.country.slug %}">All posts about this country</a>
+</article>
