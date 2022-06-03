@@ -1,9 +1,48 @@
-{% extends 'base.html' %}
-{% block title %}Sign Up for Travel Blog{% endblock %}
+<!-- templates/users/signup.html -->
+{% extends "base.html" %}
+{% block title %}Sign up{% endblock %}
 {% block content %}
-    <form method="post" action="{% url 'users:signup' %}"
-          {% csrf_token %}
-          {{  form.as_p  }}
-          <input type="submit" value="Sign up">
-    </form>
+{% load user_filters %}
+<div>
+    <h1>Sign up for Travel Blog</h1>
+    <div>
+        {% if form.errors %}
+        {% for field in form %}
+        {% for error in field.errors %}
+        <div>
+            {{ error|escape }}
+        </div>
+        {% endfor %}
+        {% endfor %}
+        {% for error in form.non_field_errors %}
+        <div>
+            {{ error|escape }}
+        </div>
+        {% endfor %}
+        {% endif %}
+
+        <form method="post" action="{% url 'users:signup' %}">
+            {% csrf_token %}
+            {% for field in form %}
+            <div>
+                <label for="{{ field.id_for_label }}">
+                    {{ field.label }}
+                    {% if field.field.required %}
+                    <span class="required text-danger">*</span>
+                    {% endif %}
+                </label>
+                {{ field|addclass:'form__input' }}
+                {% if field.help_text %}
+                <small id="{{ field.id_for_label }}-help">
+                    {{ field.help_text|safe }}
+                </small>
+                {% endif %}
+            </div>
+            {% endfor %}
+            <div>
+                <button type="submit">Sign up</button>
+            </div>
+        </form>
+    </div>
+</div>
 {% endblock %}
