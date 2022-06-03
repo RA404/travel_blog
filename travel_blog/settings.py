@@ -125,3 +125,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 # STATIC_ROOT # for collecting static on the server
+LOGIN_URL = 'users:login'
+LOGIN_REDIRECT_URL = 'travel_posts:main'
+# LOGOUT_REDIRECT_URL = 'users:logout'
