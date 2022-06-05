@@ -2,8 +2,9 @@
 {% block content %}
 <div>
     <h1>The newest posts</h1>
-    {% for post in posts %}
+    {% for post in page_posts %}
         {% include 'includes/post_card.html' %}
     {% endfor %}
+    {% include 'includes/paginator.html' %}
 </div>
 {% endblock %}
