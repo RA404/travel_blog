@@ -67,6 +67,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'core.context_processors.year.year'
             ],
         },
     },
@@ -127,4 +128,7 @@ STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 # STATIC_ROOT # for collecting static on the server
 LOGIN_URL = 'users:login'
 LOGIN_REDIRECT_URL = 'travel_posts:main'
-# LOGOUT_REDIRECT_URL = 'users:logout'
+# LOGOUT_REDIRECT_URL = 'users:logout
+#
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
