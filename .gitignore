@@ -129,3 +129,5 @@ dmypy.json
 .pyre/
 
 .idea/
+
+sent_emails/
