@@ -1,20 +1,30 @@
 {% if page_posts.has_other_pages %}
-<nav>
-  <ul>
+<nav class="paginator">
+  <ul class="paginator__items">
     {% if page_posts.has_previous %}
-      <li><a href="?page=1">&lt;&lt;first</a></li>
-      <li><a href="?page={{ page_posts.previous_page_number }}">&lt;previous</a></li>
+      <li class="paginator__item paginator__item_start-end">
+        <a class="paginator__link" href="?page=1">&lt;&lt; first</a>
+      </li>
+      <li class="paginator__item paginator__item_step">
+        <a class="paginator__link" href="?page={{ page_posts.previous_page_number }}">&lt; previous</a>
+      </li>
     {% endif %}
     {% for i in page_posts.paginator.page_range %}
         {% if page_posts.number == i %}
-          <li><span>{{ i }}</span></li>
+          <li class="paginator__item paginator__item_checked">{{ i }}</li>
         {% else %}
-          <li><a href="?page={{ i }}">{{ i }}</a></li>
+          <li class="paginator__item">
+            <a class="paginator__link" href="?page={{ i }}">{{ i }}</a>
+          </li>
         {% endif %}
     {% endfor %}
     {% if page_posts.has_next %}
-      <li><a href="?page={{ page_posts.next_page_number }}">next&gt;</a></li>
-      <li><a href="?page={{ page_posts.paginator.num_pages }}">last&gt;&gt;</a></li>
+      <li class="paginator__item paginator__item_step">
+        <a class="paginator__link" href="?page={{ page_posts.next_page_number }}">next &gt</a>
+      </li>
+      <li class="paginator__item paginator__item_start-end">
+        <a class="paginator__link" href="?page={{ page_posts.paginator.num_pages }}">last &gt&gt</a>
+      </li>
     {% endif %}
   </ul>
 </nav>
