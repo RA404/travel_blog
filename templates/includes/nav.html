@@ -1,5 +1,10 @@
-<nav>
-    <div>
-        <a href="{% url 'travel_posts:main' %}">Travel Blog</a>
-    </div>
+<nav class="menu">
+    <ul class="menu__items">
+        <li class="menu__item">
+            <a class="menu__link" href="{% url 'about:author' %}">Author</a>
+        </li>
+        <li class="menu__item">
+            <a class="menu__link" href="{% url 'about:tech' %}">About tech</a>
+        </li>
+    </ul>
 </nav>
