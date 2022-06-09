@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% block title %} Posts about {{ country_name }} {% endblock %}
 {% block content %}
-    <h1>Posts about {{ country_name }}</h1>
+    <h1 class="title">Posts about {{ country_name }}</h1>
     {% for post in page_posts %}
         {% include 'includes/post_card.html' %}
     {% endfor %}
