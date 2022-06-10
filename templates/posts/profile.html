@@ -1,8 +1,9 @@
 {% extends 'base.html' %}
-{% block title %}Travel Blog{% endblock %}
+{% block title %}{{ author }} profile{% endblock %}
 {% block content %}
 <div>
-    <h1 class="title">The newest posts</h1>
+    <h1 class="title">All {{ author }}'s posts</h1>
+    <h3>Total posts {{ posts.count }}</h3>
     {% for post in page_posts %}
         {% include 'includes/post_card.html' %}
     {% endfor %}
