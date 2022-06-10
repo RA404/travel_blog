@@ -1,3 +1,4 @@
+from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404
 from django.http import HttpResponse, HttpRequest
@@ -64,3 +65,13 @@ def post_detail(request: HttpRequest, post_id: int) -> HttpResponse:
     templates = 'posts/post_detail.html'
 
     return render(request, templates, context)
+
+
+@login_required(login_url='users:login')
+def post_create(request: HttpRequest) -> HttpResponse:
+    pass
+
+
+@login_required(login_url='users:login')
+def post_edit(request: HttpRequest) -> HttpResponse:
+    pass
