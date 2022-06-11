@@ -1,9 +1,10 @@
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpRequest
 from typing import Dict
 from .models import Post, Country, User
+from .forms import PostForm
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -69,9 +70,32 @@ def post_detail(request: HttpRequest, post_id: int) -> HttpResponse:
 
 @login_required(login_url='users:login')
 def post_create(request: HttpRequest) -> HttpResponse:
-    pass
+    form = PostForm(request.POST or None)
+    if form.is_valid():
+        new_post = form.save(commit=False)
+        new_post.author = request.user
+        new_post.save()
+
+        return redirect('travel_posts:profile', request.user)
+
+    return render(request, 'posts/create_post.html', {'form': form})
 
 
 @login_required(login_url='users:login')
-def post_edit(request: HttpRequest) -> HttpResponse:
-    pass
+def post_edit(request: HttpRequest, post_id: int) -> HttpResponse:
+    post = get_object_or_404(Post, id=post_id)
+
+    if post.author != request.user:
+        return redirect('travel_posts:index')
+
+    form = PostForm(request.POST or None, instance=post)
+    if form.is_valid():
+        form.save()
+
+        return redirect('travel_posts:post_detail', post_id)
+
+    return render(
+        request,
+        'posts/update_post.html',
+        {'form': form, 'post': post}
+    )
