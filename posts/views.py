@@ -29,7 +29,7 @@ def country_posts(request: HttpRequest, slug: str) -> HttpResponse:
     page_posts = paginator.get_page(page_number)
 
     context: Dict[str, str] = {
-        'country_name': slug,
+        'country': country,
         'page_posts': page_posts,
     }
     templates = 'posts/country_posts.html'
