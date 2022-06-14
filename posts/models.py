@@ -8,7 +8,7 @@ User = get_user_model()
 class Country(models.Model):
     title = models.CharField(max_length=60)
     slug = models.SlugField(unique=True)
-    description = models.TextField()
+    description = models.TextField(null=True, blank=True)
 
     class Meta:
         ordering = ('title',)
