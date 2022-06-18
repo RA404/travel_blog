@@ -2,10 +2,10 @@
     <div class="logo">
         <a class="logo__link" href="{% url 'travel_posts:main' %}">Travel Blog</a>
     </div>
-    {% include 'includes/nav.html' %}
+    {% include 'includes/nav_header.html' %}
     <div class="user">
         {% if user.is_authenticated %}
-            <a class="user__link" href="#">{{ user }}</a>
+            <a class="user__link" href="{% url 'travel_posts:profile' user.username %}">{{ user }}</a>
             <a class="user__link" href="{% url 'users:logout' %}">logout</a>
         {% else %}
             <a class="user__link" href="{% url 'users:login' %}">login</a>
