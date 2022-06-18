@@ -6,12 +6,6 @@
             <a class="menu__link {% if view_name == 'travel_posts:post_create' %}menu__link_checked{% endif %}" href="{% url 'travel_posts:post_create' %}">Create post</a>
         </li>
         {% endif %}
-        <li class="menu__item">
-            <a class="menu__link {% if view_name == 'about:author' %}menu__link_checked{% endif %}" href="{% url 'about:author' %}">Author</a>
-        </li>
-        <li class="menu__item">
-            <a class="menu__link {% if view_name == 'about:tech' %}menu__link_checked{% endif %}" href="{% url 'about:tech' %}">About tech</a>
-        </li>
     </ul>
     {% endwith %}
 </nav>
