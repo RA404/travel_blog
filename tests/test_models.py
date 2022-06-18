@@ -26,7 +26,7 @@ class TestPostModel(TestCase):
         )
 
     def test_models_have_correct_str(self):
-        """check __str__ is filled"""
+        """check __str__ is filled correctly"""
         post = TestPostModel.post
         post_str_expected = f'{post.pk} | {post.author} | {post.text[:15]}'
         self.assertEquals(post_str_expected, str(post))
