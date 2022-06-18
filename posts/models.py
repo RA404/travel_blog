@@ -18,17 +18,26 @@ class Country(models.Model):
 
 
 class Post(models.Model):
-    text = models.TextField()
-    pub_date = models.DateTimeField(auto_now_add=True)
+    text = models.TextField(
+        verbose_name='Posts text',
+        help_text="Write what's on your mind?"
+    )
+    pub_date = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Posts date and time'
+    )
     author = models.ForeignKey(User,
                                null=False,
                                on_delete=models.CASCADE,
-                               related_name='posts')
+                               related_name='posts',
+                               verbose_name='Author')
     country = models.ForeignKey(Country,
                                 null=True,
                                 blank=False,
                                 on_delete=models.SET_NULL,
-                                related_name='posts')
+                                related_name='posts',
+                                verbose_name='Country about which post',
+                                help_text='Choose a country')
 
     class Meta:
         ordering = ('-pub_date',)
