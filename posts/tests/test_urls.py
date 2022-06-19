@@ -39,11 +39,6 @@ class PostURLsTests(TestCase):
                 'travel_posts:post_detail',
                 kwargs={'post_id': PostURLsTests.post.pk},
             ): 'posts/post_detail.html',
-            # reverse('travel_posts:post_create'): 'posts/create_post.html',
-            # reverse(
-            #     'travel_posts:post_edit',
-            #     kwargs={'post_id': PostURLsTests.post.pk}
-            # ): 'posts/update_post.html',
         }
 
     def setUp(self):
@@ -52,6 +47,9 @@ class PostURLsTests(TestCase):
         self.user = User.objects.create_user(username='UserAuth')
         self.web_client_auth = Client()
         self.web_client_auth.force_login(self.user)
+
+        self.web_client_author = Client()
+        self.web_client_author.force_login(PostURLsTests.user)
 
     def test_page_status_ok(self):
         """Test pages statuses for all users, including unauthorized"""
@@ -81,19 +79,102 @@ class PostURLsTests(TestCase):
         self.assertRedirects(response, expected_url)
 
     def test_post_create_return_302_for_unauthorized(self):
+        """create post return code 302 for unauthorized user"""
         response = self.web_client_guest.get(
             reverse('travel_posts:post_create')
         )
         self.assertEquals(response.status_code, HTTPStatus.FOUND)
 
     def test_post_create_return_200_for_authorized(self):
+        """create post return code 200 for authorized user"""
         response = self.web_client_auth.get(
             reverse('travel_posts:post_create')
         )
         self.assertEquals(response.status_code, HTTPStatus.OK)
 
     def test_post_create_correct_template_for_authorized(self):
+        """create post return correct template for authorized user"""
         response = self.web_client_auth.get(
             reverse('travel_posts:post_create')
         )
         self.assertTemplateUsed(response, 'posts/create_post.html')
+
+    def test_edit_post_return_404_if_post_doesnt_exist(self):
+        """if editing post doesn't exist, a 404 will be returned"""
+        response = self.web_client_auth.get(
+            reverse(
+                'travel_posts:post_edit',
+                kwargs={'post_id': '999'}
+            )
+        )
+        self.assertEquals(response.status_code, HTTPStatus.NOT_FOUND)
+
+    def test_edit_post_return_302_for_unauthorized(self):
+        """if user unauthorized edit post return 302 to login"""
+        response = self.web_client_guest.get(
+            reverse(
+                'travel_posts:post_edit',
+                kwargs={'post_id': PostURLsTests.post.pk}
+            )
+        )
+        self.assertEquals(response.status_code, HTTPStatus.FOUND)
+
+    def test_edit_post_redirect_to_login_unauthorized(self):
+        """if user unauthorized edit post redirect to login page"""
+        edit_url = reverse(
+            'travel_posts:post_edit',
+            kwargs={'post_id': PostURLsTests.post.pk}
+        )
+        expected_url = f'{reverse("users:login")}?next={edit_url}'
+        response = self.web_client_guest.get(
+            edit_url,
+            follow=True
+        )
+        self.assertRedirects(response, expected_url)
+
+    def test_edit_post_return_302_if_not_author(self):
+        """if not author try to edit post return 302 to main page"""
+        response = self.web_client_auth.get(
+            reverse(
+                'travel_posts:post_edit',
+                kwargs={'post_id': PostURLsTests.post.pk}
+            )
+        )
+        self.assertEquals(response.status_code, HTTPStatus.FOUND)
+
+    def test_edit_post_redirect_to_main_if_not_author(self):
+        """if not author try to edit post redirect to main page"""
+        response = self.web_client_auth.get(
+            reverse(
+                'travel_posts:post_edit',
+                kwargs={'post_id': PostURLsTests.post.pk}
+            ),
+            follow=True
+        )
+        self.assertTemplateUsed(response, 'posts/index.html')
+
+    def test_edit_post_return_200_for_authorized_author(self):
+        """if author try to edit post return code 200"""
+        response = self.web_client_author.get(
+            reverse(
+                'travel_posts:post_edit',
+                kwargs={'post_id': PostURLsTests.post.pk}
+            )
+        )
+        self.assertEquals(response.status_code, HTTPStatus.OK)
+
+    def test_edit_post_correct_template_for_author(self):
+        """if author try to edit post check correct template for it"""
+        response = self.web_client_author.get(
+            reverse(
+                'travel_posts:post_edit',
+                kwargs={'post_id': PostURLsTests.post.pk}
+            ),
+            follow=True
+        )
+        self.assertTemplateUsed(response, 'posts/update_post.html')
+
+    def test_unexisting_page_return_404(self):
+        """if user use unexisting url the app will be returned 404"""
+        response = self.web_client_guest.get('/unexisting_page_999/')
+        self.assertEquals(response.status_code, HTTPStatus.NOT_FOUND)

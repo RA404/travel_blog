@@ -86,7 +86,7 @@ def post_edit(request: HttpRequest, post_id: int) -> HttpResponse:
     post = get_object_or_404(Post, id=post_id)
 
     if post.author != request.user:
-        return redirect('travel_posts:index')
+        return redirect('travel_posts:main')
 
     form = PostForm(request.POST or None, instance=post)
     if form.is_valid():
