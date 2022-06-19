@@ -54,7 +54,7 @@ class PostURLsTests(TestCase):
     def test_page_status_ok(self):
         """Test pages statuses for all users, including unauthorized"""
         for post_url in PostURLsTests.post_urls_templates_for_all:
-            with self.subTest():
+            with self.subTest(post_url=post_url):
                 response = self.web_client_guest.get(post_url)
                 self.assertEquals(response.status_code, HTTPStatus.OK)
 
@@ -64,7 +64,7 @@ class PostURLsTests(TestCase):
             post_url,
             template,
         ) in PostURLsTests.post_urls_templates_for_all.items():
-            with self.subTest():
+            with self.subTest(post_url=post_url):
                 response = self.web_client_guest.get(post_url)
                 self.assertTemplateUsed(response, template)
 
