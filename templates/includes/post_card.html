@@ -18,7 +18,7 @@
     <br>
     {% endif %}
     {% if view_name != 'travel_posts:country_posts' and post.country %}
-    <a href="{% url 'travel_posts:country_posts' post.country.slug %}">All {{ post.country.slug }} posts</a>
+    <a href="{% url 'travel_posts:country_posts' post.country.slug %}">All {{ post.country.title }} posts</a>
     <br>
     {% endif %}
     {% endwith %}
