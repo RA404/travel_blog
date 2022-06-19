@@ -69,3 +69,31 @@ class PostURLsTests(TestCase):
             with self.subTest():
                 response = self.web_client_guest.get(post_url)
                 self.assertTemplateUsed(response, template)
+
+    def test_post_create_redirect_to_login_unauthorized(self):
+        """create post redirect to login page unauthorized user"""
+        create_url = reverse('travel_posts:post_create')
+        expected_url = f'{reverse("users:login")}?next={create_url}'
+        response = self.web_client_guest.get(
+            create_url,
+            follow=True
+        )
+        self.assertRedirects(response, expected_url)
+
+    def test_post_create_return_302_for_unauthorized(self):
+        response = self.web_client_guest.get(
+            reverse('travel_posts:post_create')
+        )
+        self.assertEquals(response.status_code, HTTPStatus.FOUND)
+
+    def test_post_create_return_200_for_authorized(self):
+        response = self.web_client_auth.get(
+            reverse('travel_posts:post_create')
+        )
+        self.assertEquals(response.status_code, HTTPStatus.OK)
+
+    def test_post_create_correct_template_for_authorized(self):
+        response = self.web_client_auth.get(
+            reverse('travel_posts:post_create')
+        )
+        self.assertTemplateUsed(response, 'posts/create_post.html')
