@@ -95,3 +95,18 @@ class TestViews(TestCase):
             with self.subTest(field=field):
                 form_field = res.context.get('form').fields.get(field)
                 self.assertIsInstance(form_field, expected_field)
+
+    def test_check_country_page_with_correct_country_posts(self):
+        wrong_country = Country.objects.create(
+            title='UnnamedCountry',
+            slug='UnnamedCountrySlug',
+            description="We mustn't see this country on a page"
+        )
+        res = self.auth_client.get(
+            reverse(
+                'travel_posts:country_posts',
+                kwargs={'slug': wrong_country.slug}
+            )
+        )
+        posts_amount = res.context.get('page_posts').paginator.count
+        self.assertEquals(posts_amount, 0)
