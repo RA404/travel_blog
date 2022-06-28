@@ -28,6 +28,7 @@ class TestViews(TestCase):
         cls.form_fields = {
             'text': forms.fields.CharField,
             'country': forms.fields.ChoiceField,
+            'image': forms.fields.ImageField,
         }
 
     def setUp(self):
