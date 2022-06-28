@@ -68,21 +68,21 @@ class TestPostsForms(TestCase):
             'author': TestPostsForms.user,
             'image': cls.uploaded_image_edited,
         }
-        cls.post_urls_templates_for_all = {
-            reverse('travel_posts:main'): 'posts/index.html',
+        cls.post_urls_for_guest_clients = (
+            reverse('travel_posts:main'),
             reverse(
                 'travel_posts:country_posts',
                 kwargs={'slug': cls.country.slug},
-            ): 'posts/country_posts.html',
+            ),
             reverse(
                 'travel_posts:profile',
                 kwargs={'user_name': cls.user},
-            ): 'posts/profile.html',
+            ),
             reverse(
                 'travel_posts:post_detail',
                 kwargs={'post_id': 1},
-            ): 'posts/post_detail.html',
-        }
+            ),
+        )
 
     @classmethod
     def tearDownClass(cls):
@@ -215,7 +215,7 @@ class TestPostsForms(TestCase):
         self.assertRedirects(res, reverse("travel_posts:main"))
 
     def test_image_exists_on_pages_after_creation(self):
-        post = Post.objects.create(
+        Post.objects.create(
             text='check posts image',
             pub_date='2022-06-18 15:35:33.561887',
             author=TestPostsForms.user,
@@ -223,7 +223,7 @@ class TestPostsForms(TestCase):
             image=TestPostsForms.uploaded_image,
         )
 
-        for page in TestPostsForms.post_urls_templates_for_all:
+        for page in TestPostsForms.post_urls_for_guest_clients:
             with self.subTest(page=page):
                 res = self.guest_client.get(page)
 
