@@ -70,7 +70,8 @@ def post_detail(request: HttpRequest, post_id: int) -> HttpResponse:
 
 @login_required(login_url='users:login')
 def post_create(request: HttpRequest) -> HttpResponse:
-    form = PostForm(request.POST or None)
+    form = PostForm(request.POST or None,
+                    files=request.FILES or None)
     if form.is_valid():
         new_post = form.save(commit=False)
         new_post.author = request.user
@@ -88,7 +89,9 @@ def post_edit(request: HttpRequest, post_id: int) -> HttpResponse:
     if post.author != request.user:
         return redirect('travel_posts:main')
 
-    form = PostForm(request.POST or None, instance=post)
+    form = PostForm(request.POST or None,
+                    files=request.FILES or None,
+                    instance=post)
     if form.is_valid():
         form.save()
 
