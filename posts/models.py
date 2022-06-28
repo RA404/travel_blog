@@ -38,6 +38,11 @@ class Post(models.Model):
                                 related_name='posts',
                                 verbose_name='Country about which post',
                                 help_text='Choose a country')
+    image = models.ImageField(upload_to='posts/',
+                              null=True,
+                              blank=True,
+                              verbose_name='Image',
+                              help_text='Choose image for your post')
 
     class Meta:
         ordering = ('-pub_date',)
