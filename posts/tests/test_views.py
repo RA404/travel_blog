@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django import forms
 
-from posts.models import Post, Country
+from posts.models import Post, Country, Comments
 
 
 User = get_user_model()
@@ -30,10 +30,18 @@ class TestViews(TestCase):
             'country': forms.fields.ChoiceField,
             'image': forms.fields.ImageField,
         }
+        cls.form_comments = {
+            'post': cls.post,
+            'author': cls.user,
+            'created': '2022-06-18 15:39:33.561887',
+            'text': 'Comment test text',
+        }
 
     def setUp(self):
         self.auth_client = Client()
         self.auth_client.force_login(TestViews.user)
+
+        self.guest_client = Client()
 
     def test_context_main_page(self):
         res = self.auth_client.get(reverse('travel_posts:main'))
@@ -111,3 +119,40 @@ class TestViews(TestCase):
         )
         posts_amount = res.context.get('page_posts').paginator.count
         self.assertEquals(posts_amount, 0)
+
+    def test_auth_user_can_add_comment(self):
+        comment_count = Comments.objects.count()
+
+        res = self.auth_client.post(
+            reverse(
+                'travel_posts:add_comment',
+                kwargs={'post_id': TestViews.post.pk}
+            ),
+            data=TestViews.form_comments,
+            follow=True,
+        )
+
+        res_comment_text = res.context.get('comments')[0]
+
+        self.assertEquals(Comments.objects.count(), comment_count + 1)
+        self.assertEquals(TestViews.form_comments['text'],
+                          res_comment_text.text)
+
+    def test_guest_cant_add_comment(self):
+        comment_count_before = Comments.objects.count()
+
+        add_url = reverse(
+            'travel_posts:add_comment',
+            kwargs={'post_id': TestViews.post.pk}
+        )
+        expected_url = f'{reverse("users:login")}?next={add_url}'
+
+        res = self.guest_client.post(
+            add_url,
+            data=TestViews.form_comments,
+            follow=True,
+        )
+        comment_count_after = Comments.objects.count()
+
+        self.assertEquals(comment_count_before, comment_count_after)
+        self.assertRedirects(res, expected_url)
