@@ -3,8 +3,8 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpRequest
 from typing import Dict
-from .models import Post, Country, User
-from .forms import PostForm
+from .models import Post, Country, User, Comments
+from .forms import PostForm, CommentForm
 
 
 def index(request: HttpRequest) -> HttpResponse:
@@ -58,9 +58,14 @@ def profile(request: HttpRequest, user_name: str) -> HttpResponse:
 
 def post_detail(request: HttpRequest, post_id: int) -> HttpResponse:
     post = get_object_or_404(Post, pk=post_id)
+    comments = post.comments.all()
+
+    form = CommentForm(request.POST or None)
 
     context = {
         'post': post,
+        'comments': comments,
+        'form': form,
     }
 
     templates = 'posts/post_detail.html'
@@ -102,3 +107,16 @@ def post_edit(request: HttpRequest, post_id: int) -> HttpResponse:
         'posts/update_post.html',
         {'form': form, 'post': post}
     )
+
+
+@login_required(login_url='users:login')
+def add_comment(request: HttpRequest, post_id: int) -> HttpResponse:
+    post = get_object_or_404(Post, id=post_id)
+
+    form = CommentForm(request.POST or None)
+    if form.is_valid():
+        comment = form.save(commit=False)
+        comment.author = request.user
+        comment.post = post
+        comment.save()
+    return redirect('travel_posts:post_detail', post_id=post_id)
