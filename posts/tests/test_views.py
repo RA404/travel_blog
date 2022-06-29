@@ -137,6 +137,9 @@ class TestViews(TestCase):
         self.assertEquals(Comments.objects.count(), comment_count + 1)
         self.assertEquals(TestViews.form_comments['text'],
                           res_comment_text.text)
+        self.assertIn('post', res.context)
+        self.assertIn('comments', res.context)
+        self.assertIn('form', res.context)
 
     def test_guest_cant_add_comment(self):
         comment_count_before = Comments.objects.count()
