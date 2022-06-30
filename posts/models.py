@@ -44,6 +44,9 @@ class Post(models.Model):
                               verbose_name='Image',
                               help_text='Choose image for your post')
 
+    def comments_count(self):
+        return self.comments.count()
+
     class Meta:
         ordering = ('-pub_date',)
 
