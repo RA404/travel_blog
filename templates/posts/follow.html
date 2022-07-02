@@ -2,7 +2,7 @@
 {% block title %}Travel Blog{% endblock %}
 {% block content %}
 <div>
-    <h1 class="title">The newest posts</h1>
+    <h1 class="title">The favorites posts</h1>
     {% include 'includes/switcher.html' %}
     {% for post in page_posts %}
         {% include 'includes/post_card.html' %}

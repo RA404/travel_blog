@@ -76,3 +76,22 @@ class Comments(models.Model):
 
     class Meta:
         ordering = ('-created',)
+
+
+class Follow(models.Model):
+    user = models.ForeignKey(User,
+                             related_name='follower',
+                             on_delete=models.CASCADE,
+                             blank=False,
+                             null=False)
+    author = models.ForeignKey(User,
+                               related_name='following',
+                               on_delete=models.CASCADE,
+                               blank=False,
+                               null=False)
+
+    def __str__(self):
+        return f'Follower: {self.user}, Following: {self.author}'
+
+    class Meta:
+        unique_together = [['user', 'author']]
