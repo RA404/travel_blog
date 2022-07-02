@@ -1,0 +1,12 @@
+{% if user.is_authenticated %}
+  <div>
+    <ul>
+      <li>
+        <a href="{% url 'travel_posts:main' %}">All</a>
+      </li>
+      <li>
+        <a href="{% url 'travel_posts:follow_index' %}">Favorites</a>
+      </li>
+    </ul>
+  </div>
+{% endif %}

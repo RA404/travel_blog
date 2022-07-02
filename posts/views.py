@@ -1,9 +1,13 @@
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import \
+    render, \
+    get_object_or_404, \
+    get_list_or_404, \
+    redirect
 from django.http import HttpResponse, HttpRequest
 from typing import Dict
-from .models import Post, Country, User, Comments
+from .models import Post, Country, User, Comments, Follow
 from .forms import PostForm, CommentForm
 
 
@@ -19,6 +23,19 @@ def index(request: HttpRequest) -> HttpResponse:
     template = 'posts/index.html'
 
     return render(request, template, context)
+
+
+@login_required(login_url='users:login')
+def follow_index(request: HttpRequest) -> HttpResponse:
+    posts = Post.objects.filter(author__following__user=request.user)
+
+    paginator = Paginator(posts, 10)
+    page_number = request.GET.get('page')
+    page_posts = paginator.get_page(page_number)
+
+    context = {'page_posts': page_posts, }
+
+    return render(request, 'posts/follow.html', context)
 
 
 def country_posts(request: HttpRequest, slug: str) -> HttpResponse:
@@ -45,10 +62,16 @@ def profile(request: HttpRequest, user_name: str) -> HttpResponse:
     page_number = request.GET.get('page')
     page_posts = paginator.get_page(page_number)
 
+    follow_list = Follow.objects.all()
+    following = False
+    if request.user.is_authenticated:
+        following = follow_list.filter(user=request.user, author=user).exists()
+
     context = {
         'page_posts': page_posts,
         'author': user,
         'posts': posts,
+        'following': following,
     }
 
     templates = 'posts/profile.html'
@@ -119,4 +142,23 @@ def add_comment(request: HttpRequest, post_id: int) -> HttpResponse:
         comment.author = request.user
         comment.post = post
         comment.save()
-    return redirect('travel_posts:post_detail', post_id=post_id)
+    return redirect('travel_posts:post_detail', post_id)
+
+
+@login_required(login_url='users:login')
+def profile_follow(request: HttpRequest, user_name: str) -> HttpResponse:
+    author = get_object_or_404(User, username=user_name)
+
+    already_follow = Follow.objects.filter(user=request.user, author=author)
+    if request.user != author and not already_follow:
+        Follow.objects.create(user=request.user, author=author)
+
+    return redirect('travel_posts:profile', user_name)
+
+
+@login_required(login_url='users:login')
+def profile_unfollow(request: HttpRequest, user_name: str) -> HttpResponse:
+    author = get_object_or_404(User, username=user_name)
+    Follow.objects.filter(user=request.user, author=author).delete()
+
+    return redirect('travel_posts:profile', user_name)
