@@ -1,10 +1,6 @@
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
-from django.shortcuts import \
-    render, \
-    get_object_or_404, \
-    get_list_or_404, \
-    redirect
+from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpRequest
 from typing import Dict
 from .models import Post, Country, User, Comments, Follow
@@ -64,14 +60,20 @@ def profile(request: HttpRequest, user_name: str) -> HttpResponse:
 
     follow_list = Follow.objects.all()
     following = False
+    following_count = 0
+    followers_count = 0
     if request.user.is_authenticated:
         following = follow_list.filter(user=request.user, author=user).exists()
+        followers_count = follow_list.filter(author=user).count()
+        following_count = follow_list.filter(user=user).count()
 
     context = {
         'page_posts': page_posts,
         'author': user,
         'posts': posts,
         'following': following,
+        'followers_count': followers_count,
+        'following_count': following_count,
     }
 
     templates = 'posts/profile.html'
