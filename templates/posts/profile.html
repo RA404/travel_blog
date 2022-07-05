@@ -7,11 +7,12 @@
     <h3>Followers {{ followers_count }}</h3>
     <h3>Following {{ following_count }}</h3>
 
-
+    {% if user != author %}
     {% if following %}
     <a href="{% url 'travel_posts:profile_unfollow' author.username %}">Unfollow</a>
     {% else %}
     <a href="{% url 'travel_posts:profile_follow' author.username %}">Follow</a>
+    {% endif %}
     {% endif %}
 
 
