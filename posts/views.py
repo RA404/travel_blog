@@ -60,12 +60,10 @@ def profile(request: HttpRequest, user_name: str) -> HttpResponse:
 
     follow_list = Follow.objects.all()
     following = False
-    following_count = 0
-    followers_count = 0
     if request.user.is_authenticated:
         following = follow_list.filter(user=request.user, author=user).exists()
-        followers_count = follow_list.filter(author=user).count()
-        following_count = follow_list.filter(user=user).count()
+    followers_count = follow_list.filter(author=user).count()
+    following_count = follow_list.filter(user=user).count()
 
     context = {
         'page_posts': page_posts,

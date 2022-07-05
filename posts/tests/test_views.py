@@ -2,8 +2,9 @@ from django.test import TestCase, Client
 from django.contrib.auth import get_user_model
 from django.urls import reverse
 from django import forms
+from http import HTTPStatus
 
-from posts.models import Post, Country, Comments
+from posts.models import Post, Country, Comments, Follow
 
 
 User = get_user_model()
@@ -14,6 +15,7 @@ class TestViews(TestCase):
     def setUpClass(cls):
         super().setUpClass()
         cls.user = User.objects.create_user(username='TestClsUser')
+        cls.author = User.objects.create_user(username='TestAuthor')
         cls.country = Country.objects.create(
             title='New Zealand',
             slug='New-Zealand',
@@ -42,6 +44,10 @@ class TestViews(TestCase):
         self.auth_client.force_login(TestViews.user)
 
         self.guest_client = Client()
+
+        self.follower_client = Client()
+        self.user = User.objects.create_user(username='TestFollower')
+        self.follower_client.force_login(self.user)
 
     def test_context_main_page(self):
         res = self.auth_client.get(reverse('travel_posts:main'))
@@ -159,3 +165,67 @@ class TestViews(TestCase):
 
         self.assertEquals(comment_count_before, comment_count_after)
         self.assertRedirects(res, expected_url)
+
+    def test_auth_user_can_follow(self):
+        follow_count = Follow.objects.count()
+
+        res = self.auth_client.get(
+            reverse(
+                'travel_posts:profile_follow',
+                kwargs={'user_name': TestViews.author}
+            ),
+            follow=True
+        )
+
+        follow = Follow.objects.last()
+
+        self.assertEqual(Follow.objects.count(), follow_count + 1)
+        self.assertIn('following', res.context)
+        self.assertEquals(follow.author, TestViews.author)
+        self.assertEquals(follow.user, TestViews.user)
+
+    def test_guest_user_cant_follow(self):
+        follow_count = Follow.objects.count()
+
+        follow_url = reverse(
+                'travel_posts:profile_follow',
+                kwargs={'user_name': TestViews.author}
+            )
+        expected_url = f'{reverse("users:login")}?next={follow_url}'
+
+        res = self.guest_client.get(follow_url)
+
+        self.assertEqual(Follow.objects.count(), follow_count)
+        self.assertRedirects(res, expected_url)
+        self.assertEquals(res.status_code, HTTPStatus.FOUND)
+
+    def test_auth_user_can_unfollow(self):
+        Follow.objects.create(user=TestViews.user, author=TestViews.author)
+
+        follow_count = Follow.objects.count()
+
+        self.auth_client.get(
+            reverse(
+                'travel_posts:profile_unfollow',
+                kwargs={'user_name': TestViews.author}
+            ),
+            follow=True
+        )
+
+        self.assertEquals(Follow.objects.count(), follow_count - 1)
+
+    def test_author_post_showing_for_followers(self):
+        Follow.objects.create(user=self.user, author=TestViews.user)
+
+        res = self.follower_client.get(reverse('travel_posts:follow_index'))
+
+        res_contexts = res.context.get('page_posts')[0]
+        self.assertEquals(TestViews.post, res_contexts)
+
+    def test_author_post_not_showing_if_unfollow(self):
+        Follow.objects.create(user=TestViews.user, author=self.user)
+
+        res = self.follower_client.get(reverse('travel_posts:follow_index'))
+
+        count_of_posts = res.context.get("page_posts").paginator.count
+        self.assertEqual(count_of_posts, 0)
