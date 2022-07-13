@@ -3,7 +3,7 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpRequest
 from typing import Dict
-from .models import Post, Country, User, Comments, Follow
+from .models import Post, Country, User, Follow, Like
 from .forms import PostForm, CommentForm
 
 
@@ -162,3 +162,22 @@ def profile_unfollow(request: HttpRequest, user_name: str) -> HttpResponse:
     Follow.objects.filter(user=request.user, author=author).delete()
 
     return redirect('travel_posts:profile', user_name)
+
+
+@login_required(login_url='users:login')
+def post_like(request: HttpRequest, post_id: int) -> HttpResponse:
+    post = get_object_or_404(Post, pk=post_id)
+
+    already_like = Like.objects.filter(user=request.user, post=post)
+    if not already_like:
+        Like.objects.create(user=request.user, post=post)
+
+    return redirect(request.META.get('HTTP_REFERER', 'travel_posts:main'))
+
+
+@login_required(login_url='users:login')
+def post_dislike(request: HttpRequest, post_id: int) -> HttpResponse:
+    post = get_object_or_404(Post, pk=post_id)
+    Like.objects.filter(user=request.user, post=post).delete()
+
+    return redirect(request.META.get('HTTP_REFERER', 'travel_posts:main'))

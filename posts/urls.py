@@ -19,8 +19,10 @@ urlpatterns = [
         name='profile_unfollow'
     ),
     path('profile/<str:user_name>/', views.profile, name='profile'),
-    path('post/<int:post_id>/', views.post_detail, name='post_detail'),
     path('create/', views.post_create, name='post_create'),
     path('post/<int:post_id>/edit/', views.post_edit, name='post_edit'),
     path('post/<int:post_id>/comment/', views.add_comment, name='add_comment'),
+    path('post/<int:post_id>/like/', views.post_like, name='post_like'),
+    path('post/<int:post_id>/dislike/', views.post_dislike, name='post_dislike'),
+    path('post/<int:post_id>/', views.post_detail, name='post_detail'),
 ]
