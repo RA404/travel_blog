@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from crum import get_current_user
 
 
 User = get_user_model()
@@ -46,6 +47,13 @@ class Post(models.Model):
 
     def comments_count(self):
         return self.comments.count()
+
+    def likes(self):
+        return self.post_likes.all()
+
+    def already_like(self):
+        current_user = get_current_user()
+        return self.post_likes.filter(user=current_user).exists()
 
     class Meta:
         ordering = ('-pub_date',)
@@ -99,12 +107,12 @@ class Follow(models.Model):
 
 class Like(models.Model):
     user = models.ForeignKey(User,
-                             related_name='liker',
+                             related_name='likers',
                              on_delete=models.CASCADE,
                              blank=False,
                              null=False)
     post = models.ForeignKey(Post,
-                             related_name='likes',
+                             related_name='post_likes',
                              blank=False,
                              null=False,
                              on_delete=models.CASCADE)
