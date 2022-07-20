@@ -8,7 +8,11 @@ from .forms import PostForm, CommentForm
 
 
 def index(request: HttpRequest) -> HttpResponse:
-    posts = Post.objects.all()
+    posts = Post.objects\
+        .select_related('author')\
+        .select_related('country')\
+        .all()
+
     paginator = Paginator(posts, 10)
     page_number = request.GET.get('page')
     page_posts = paginator.get_page(page_number)
@@ -82,6 +86,12 @@ def profile(request: HttpRequest, user_name: str) -> HttpResponse:
 def post_detail(request: HttpRequest, post_id: int) -> HttpResponse:
     post = get_object_or_404(Post, pk=post_id)
     comments = post.comments.all()
+    # likes = post.post_likes.count()
+    # already_like = False
+    # if request.user.is_authenticated:
+    #     already_like = Like.objects\
+    #         .filter(user=request.user, post=post)\
+    #         .exists()
 
     form = CommentForm(request.POST or None)
 
@@ -89,6 +99,8 @@ def post_detail(request: HttpRequest, post_id: int) -> HttpResponse:
         'post': post,
         'comments': comments,
         'form': form,
+        # 'likes': likes,
+        # 'already_like': already_like,
     }
 
     templates = 'posts/post_detail.html'

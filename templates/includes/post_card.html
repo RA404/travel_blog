@@ -16,10 +16,14 @@
         {{ post.text }}
     </p>
     <p>Comments: {{ post.comments_count }}</p>
-    {% if post.pk  %}
-    <a href="{% url 'travel_posts:post_like' post.pk %}">Post like</a>
+
+    {% if post.already_like %}
     <a href="{% url 'travel_posts:post_dislike' post.pk %}">Post dislike</a>
+    {% else %}
+    <a href="{% url 'travel_posts:post_like' post.pk %}">Post like</a>
     {% endif %}
+    <p>Likes: {{ post.likes.count }}</p>
+
     {% if view_name != 'travel_posts:post_detail' and post.pk %}
     <a href="{% url 'travel_posts:post_detail' post.pk %}">Post details</a>
     {% endif %}
