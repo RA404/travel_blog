@@ -4,9 +4,11 @@
 <div>
     <h1 class="title">The favorites posts</h1>
     {% include 'includes/switcher.html' %}
+    <div class="cards-container">
     {% for post in page_posts %}
         {% include 'includes/post_card.html' %}
     {% endfor %}
+    </div>
     {% include 'includes/paginator.html' %}
 </div>
 {% endblock %}
