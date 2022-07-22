@@ -1,4 +1,4 @@
-<article class="card">
+<article class="cards-container__card">
     {% with request.resolver_match.view_name as view_name %}
     <ul>
         <li>
@@ -17,7 +17,7 @@
     </p>
     <p>Comments: {{ post.comments_count }}</p>
 
-    {% if post.already_like %}
+    {% if user.is_authenticated and post.already_like %}
     <a href="{% url 'travel_posts:post_dislike' post.pk %}">Post dislike</a>
     {% else %}
     <a href="{% url 'travel_posts:post_like' post.pk %}">Post like</a>
