@@ -2,6 +2,7 @@ from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse, HttpRequest
+from .variables import posts_per_page
 from typing import Dict
 from .models import Post, Country, User, Follow, Like
 from .forms import PostForm, CommentForm
@@ -13,7 +14,7 @@ def index(request: HttpRequest) -> HttpResponse:
         .select_related('country')\
         .all()
 
-    paginator = Paginator(posts, 10)
+    paginator = Paginator(posts, posts_per_page)
     page_number = request.GET.get('page')
     page_posts = paginator.get_page(page_number)
 
@@ -29,7 +30,7 @@ def index(request: HttpRequest) -> HttpResponse:
 def follow_index(request: HttpRequest) -> HttpResponse:
     posts = Post.objects.filter(author__following__user=request.user)
 
-    paginator = Paginator(posts, 10)
+    paginator = Paginator(posts, posts_per_page)
     page_number = request.GET.get('page')
     page_posts = paginator.get_page(page_number)
 
@@ -41,7 +42,7 @@ def follow_index(request: HttpRequest) -> HttpResponse:
 def country_posts(request: HttpRequest, slug: str) -> HttpResponse:
     country = get_object_or_404(Country, slug=slug)
     posts = country.posts.all()
-    paginator = Paginator(posts, 10)
+    paginator = Paginator(posts, posts_per_page)
     page_number = request.GET.get('page')
     page_posts = paginator.get_page(page_number)
 
@@ -58,7 +59,7 @@ def profile(request: HttpRequest, user_name: str) -> HttpResponse:
     user = get_object_or_404(User, username=user_name)
     posts = Post.objects.filter(author=user)
 
-    paginator = Paginator(posts, 10)
+    paginator = Paginator(posts, posts_per_page)
     page_number = request.GET.get('page')
     page_posts = paginator.get_page(page_number)
 
