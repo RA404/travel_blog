@@ -12,7 +12,7 @@ class TestPaginator(TestCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
-        cls.posts_per_page = 10
+        cls.posts_per_page = 12
         cls.amount_of_posts = 13
         cls.user = User.objects.create_user(username='TestClsUser')
         cls.country = Country.objects.create(

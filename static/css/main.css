@@ -357,3 +357,62 @@
     }
 }
 /* cards finished */
+
+/* comments start */
+.comments-container {
+    width: 95%;
+    font-size: 16px;
+    line-height: 22px;
+    font-family: 'Roboto','Helvetica Neue', Arial, sans-serif;
+    margin: 0 auto;
+}
+
+.comment__title {
+    font-size: 26px;
+    line-height: 30px;
+    margin: 15px 0;
+}
+
+.comment__text {
+    margin: 5px 0 15px 10px;
+}
+
+.comment {
+    background-color: #FFE4E1;
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px auto;
+}
+
+.form__input-container {
+    margin: 0;
+    padding: 0;
+    border: none;
+    display: flex;
+    flex-direction: column;
+}
+
+.form__input {
+    padding: 5px;
+    margin: 5px auto;
+    width: 100%;
+    border-radius: 10px;
+    height: 60px;
+}
+/* comments finished */
+
+.form__button {
+  box-sizing: border-box;
+  border: 0;
+  border-radius: 100px;
+  height: 64px;
+  font-family: 'Roboto','Helvetica Neue', Arial, sans-serif;
+  color: #fff;
+  font-size: 18px;
+  line-height: 24px;
+  background-color: #2F71E5;
+  width: 168px;
+  padding: 0;
+  box-shadow: 0px 5px 15px rgba(14, 26, 57, 0.2);
+  cursor: pointer;
+}
