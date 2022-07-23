@@ -1,6 +1,7 @@
-<article class="post-card">
+{% with request.resolver_match.view_name as view_name %}
+<article class="post-card {% if view_name == 'travel_posts:post_detail' %}post-card_detail{% endif %}">
     {% load static %}
-    {% with request.resolver_match.view_name as view_name %}
+
     <ul class="post-card__info">
         <li class="post-card__info-item">
             Author: <a href="{% url 'travel_posts:profile' post.author.username %}">{{ post.author }}</a>
@@ -15,7 +16,7 @@
         <p class="post-card__text">{{ post.text }}</p>
     </a>
     {% else %}
-        <p class="post-card__text">{{ post.text }}</p>
+        <p class="post-card__text post-card__text_detail">{{ post.text }}</p>
     {% endif %}
 
     {% if view_name != 'travel_posts:country_posts' and post.country %}
@@ -32,11 +33,11 @@
     {% else %}
         {% load thumbnail %}
         {% thumbnail post.image "1440x960" upscale=False as im %}
-            <img class="post-card__image" src="{{ im.url }}">
+            <img class="post-card__image post-card__image_detail" src="{{ im.url }}">
         {% endthumbnail %}
     {% endif %}
 
-    <div class="post-card__handlers-container">
+    <div class="post-card__handlers-container {% if view_name == 'travel_posts:post_detail' %}post-card__handlers-container_detail{% endif %}">
         {% if user.is_authenticated and post.already_like %}
             <a href="{% url 'travel_posts:post_dislike' post.pk %}" class="post-card__img-link">
                 <img src="{% static 'img/heart_fill.png' %}" alt="Dislike" class="post-card__icon">
@@ -71,5 +72,6 @@
         {% endif %}
     </div>
 
-    {% endwith %}
+
 </article>
+{% endwith %}
