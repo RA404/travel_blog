@@ -73,7 +73,7 @@ class Comments(models.Model):
                                null=False,
                                blank=False,
                                related_name='comments')
-    text = models.TextField(verbose_name='Comment text',
+    text = models.TextField(verbose_name='Write a comment...',
                             null=False,
                             blank=False)
     created = models.DateTimeField(auto_now_add=True,
