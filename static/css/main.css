@@ -199,6 +199,12 @@
     box-sizing: border-box;
 }
 
+.post-card_detail {
+    width: 95%;
+    margin: 15px auto 15px auto;
+    max-height: 80%;
+}
+
 .post-card__handlers-container {
     max-width: 400px;
     max-height: 50px;
@@ -207,6 +213,11 @@
     justify-content: center;
     align-items: baseline;
     margin: 10px;
+}
+
+.post-card__handlers-container_detail {
+    display: flex;
+    margin: 10px auto;
 }
 
 .post-card__icon {
@@ -224,7 +235,7 @@
 
 .post-card__counter {
     font-size: 26px;
-    margin: auto 5px auto 5px;
+    margin: auto 15px auto 5px;
     text-decoration: none;
 }
 
@@ -243,6 +254,18 @@
     margin: 5px auto 5px auto;
 }
 
+.post-card__image {
+    max-height: 500px;
+    max-width: 400px;
+    object-fit: scale-down;
+    margin: 5px auto 5px auto;
+}
+
+.post-card__image_detail {
+    max-height: 98%;
+    max-width: 98%;
+}
+
 .post-card__text {
   color: #1A1B22;
   max-width: 390px;
@@ -252,7 +275,18 @@
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 3; /* number of lines to show */
+  line-clamp: 3;
   -webkit-box-orient: vertical;
+}
+
+.post-card__text_detail {
+    max-width: 90%;
+    overflow: visible;
+    text-overflow: clip;
+    display: flex;
+    -webkit-line-clamp: unset; /* number of lines to show */
+    line-clamp: unset;
+    -webkit-box-orient: unset;
 }
 
 .post-card__link {
@@ -279,9 +313,19 @@
         width: 300px;
     }
 
+    .post-card_detail {
+        width: 95%;
+        margin: 15px auto 15px auto;
+    }
+
     .post-card__handlers-container {
         width: 300px;
         margin: 10px 0 10px 0;
+    }
+
+    .post-card__handlers-container_detail {
+        display: flex;
+        margin: 10px auto;
     }
 
     .post-card__image {
@@ -291,6 +335,21 @@
 
     .post-card__text {
         max-width: 300px;
+    }
+
+    .post-card__image_detail {
+        max-height: 98%;
+        max-width: 98%;
+    }
+
+    .post-card__text_detail {
+        max-width: 90%;
+        overflow: visible;
+        text-overflow: clip;
+        display: flex;
+        -webkit-line-clamp: unset; /* number of lines to show */
+        line-clamp: unset;
+        -webkit-box-orient: unset;
     }
 
     .main {
