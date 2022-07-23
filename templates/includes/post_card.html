@@ -1,21 +1,40 @@
 <article class="post-card">
     {% load static %}
     {% with request.resolver_match.view_name as view_name %}
-    <ul>
-        <li>
+    <ul class="post-card__info">
+        <li class="post-card__info-item">
             Author: <a href="{% url 'travel_posts:profile' post.author.username %}">{{ post.author }}</a>
         </li>
-        <li>
+        <li class="post-card__info-item">
             Date: {{ post.pub_date|date:"d.m.Y" }}
         </li>
     </ul>
-    <p>
-        {{ post.text }}
-    </p>
-    {% load thumbnail %}
-    {% thumbnail post.image "1440x960" upscale=False as im %}
-        <img class="post-card__image" src="{{ im.url }}">
-    {% endthumbnail %}
+
+    {% if view_name != 'travel_posts:post_detail' and post.pk %}
+    <a href="{% url 'travel_posts:post_detail' post.pk %}" class="post-card__img-link">
+        <p class="post-card__text">{{ post.text }}</p>
+    </a>
+    {% else %}
+        <p class="post-card__text">{{ post.text }}</p>
+    {% endif %}
+
+    {% if view_name != 'travel_posts:country_posts' and post.country %}
+    <a href="{% url 'travel_posts:country_posts' post.country.slug %}" class="post-card__link">See all {{ post.country.title }} posts</a>
+    {% endif %}
+
+    {% if view_name != 'travel_posts:post_detail' and post.pk %}
+        <a href="{% url 'travel_posts:post_detail' post.pk %}" class="post-card__img-link">
+        {% load thumbnail %}
+        {% thumbnail post.image "1440x960" upscale=False as im %}
+            <img class="post-card__image" src="{{ im.url }}">
+        {% endthumbnail %}
+        </a>
+    {% else %}
+        {% load thumbnail %}
+        {% thumbnail post.image "1440x960" upscale=False as im %}
+            <img class="post-card__image" src="{{ im.url }}">
+        {% endthumbnail %}
+    {% endif %}
 
     <div class="post-card__handlers-container">
         {% if user.is_authenticated and post.already_like %}
@@ -51,10 +70,6 @@
             </a>
         {% endif %}
     </div>
-
-    {% if view_name != 'travel_posts:country_posts' and post.country %}
-    <a href="{% url 'travel_posts:country_posts' post.country.slug %}">All {{ post.country.title }} posts</a>
-    {% endif %}
 
     {% endwith %}
 </article>

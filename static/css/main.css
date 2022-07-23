@@ -179,7 +179,7 @@
     position: relative;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
+    justify-content: center;
     flex-wrap: wrap;
 }
 
@@ -189,9 +189,14 @@
     position: relative;
     display: flex;
     flex-direction: column;
-    margin: 0 5px 5px 5px;
+    justify-content: start;
+    margin: 15px 10px 15px 10px;
     width: 400px;
     max-height: 768px;
+    font-size: 16px;
+    line-height: 22px;
+    font-family: 'Roboto','Helvetica Neue', Arial, sans-serif;
+    box-sizing: border-box;
 }
 
 .post-card__handlers-container {
@@ -201,6 +206,7 @@
     flex-direction: row;
     justify-content: center;
     align-items: baseline;
+    margin: 10px;
 }
 
 .post-card__icon {
@@ -210,7 +216,7 @@
 }
 
 .post-card__img-link {
-    margin: auto 5px auto 5px;
+    margin: auto;
     padding: 0;
     text-decoration: none;
     display:flex;
@@ -218,7 +224,6 @@
 
 .post-card__counter {
     font-size: 26px;
-    font-family: 'Roboto','Helvetica Neue', Arial, sans-serif;
     margin: auto 5px auto 5px;
     text-decoration: none;
 }
@@ -236,5 +241,60 @@
     max-width: 400px;
     object-fit: scale-down;
     margin: 5px auto 5px auto;
+}
+
+.post-card__text {
+  color: #1A1B22;
+  max-width: 390px;
+  margin: auto;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 3; /* number of lines to show */
+  -webkit-box-orient: vertical;
+}
+
+.post-card__link {
+  margin: 5px;
+  text-align: center;
+}
+
+.post-card__info {
+    list-style-type: none;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0;
+    margin: 5px auto 5px auto;
+}
+
+.post-card__info-item {
+    padding: 0;
+    margin: 0;
+}
+
+@media (max-width: 576px) {
+    .post-card {
+        width: 300px;
+    }
+
+    .post-card__handlers-container {
+        width: 300px;
+        margin: 10px 0 10px 0;
+    }
+
+    .post-card__image {
+        max-width: 298px;
+        margin: 15px 0px 15px 0px;
+    }
+
+    .post-card__text {
+        max-width: 300px;
+    }
+
+    .main {
+        padding: 0 5px 0 5px;
+    }
 }
 /* cards finished */
