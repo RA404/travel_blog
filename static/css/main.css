@@ -398,6 +398,7 @@
     width: 100%;
     border-radius: 10px;
     height: 60px;
+    box-sizing: border-box;
 }
 /* comments finished */
 
