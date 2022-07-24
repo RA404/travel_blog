@@ -3,22 +3,24 @@
 {% block content %}
 <div>
     <h1 class="title">All {{ author }}'s posts</h1>
-    <h3>Total posts {{ posts.count }}</h3>
-    <h3>Followers {{ followers_count }}</h3>
-    <h3>Following {{ following_count }}</h3>
+    <div class="profile-container">
+        <p class="text">Posts {{ posts.count }}</p>
+        <p class="text">Followers {{ followers_count }}</p>
+        <p class="text">Following {{ following_count }}</p>
+        {% if user != author %}
+            {% if following %}
+                <a class="link-button" href="{% url 'travel_posts:profile_unfollow' author.username %}">Unfollow</a>
+            {% else %}
+                <a class="link-button" href="{% url 'travel_posts:profile_follow' author.username %}">Follow</a>
+            {% endif %}
+        {% endif %}
+    </div>
 
-    {% if user != author %}
-    {% if following %}
-    <a href="{% url 'travel_posts:profile_unfollow' author.username %}">Unfollow</a>
-    {% else %}
-    <a href="{% url 'travel_posts:profile_follow' author.username %}">Follow</a>
-    {% endif %}
-    {% endif %}
-
-
-    {% for post in page_posts %}
-    {% include 'includes/post_card.html' %}
-    {% endfor %}
-    {% include 'includes/paginator.html' %}
+    <div class="cards-container">
+        {% for post in page_posts %}
+        {% include 'includes/post_card.html' %}
+        {% endfor %}
+        {% include 'includes/paginator.html' %}
+    </div>
 </div>
 {% endblock %}
