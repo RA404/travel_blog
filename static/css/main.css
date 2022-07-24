@@ -354,6 +354,7 @@
 
     .main {
         padding: 0 5px 0 5px;
+        box-sizing: border-box;
     }
 }
 /* cards finished */
@@ -383,7 +384,9 @@
     padding: 10px;
     margin: 10px auto;
 }
+/* comments finished */
 
+/* form started */
 .form__input-container {
     margin: 0;
     padding: 0;
@@ -400,20 +403,48 @@
     height: 60px;
     box-sizing: border-box;
 }
-/* comments finished */
+
+.form-container {
+    width: 95%;
+    font-size: 16px;
+    line-height: 22px;
+    font-family: 'Roboto','Helvetica Neue', Arial, sans-serif;
+    margin: 0 auto;
+}
 
 .form__button {
   box-sizing: border-box;
   border: 0;
   border-radius: 100px;
-  height: 64px;
+  height: 54px;
   font-family: 'Roboto','Helvetica Neue', Arial, sans-serif;
   color: #fff;
   font-size: 18px;
   line-height: 24px;
   background-color: #2F71E5;
-  width: 168px;
-  padding: 0;
+  max-width: 290px;
+  min-width: 110px;
+  padding: 0 15px;
   box-shadow: 0px 5px 15px rgba(14, 26, 57, 0.2);
   cursor: pointer;
+  margin: 5px 0;
+}
+/* form finished*/
+
+.link {
+    font-size: 16px;
+    line-height: 22px;
+    font-family: 'Roboto','Helvetica Neue', Arial, sans-serif;
+    margin: 5px 0;
+    display: block;
+}
+
+.text {
+    font-size: 16px;
+    line-height: 22px;
+    font-family: 'Roboto','Helvetica Neue', Arial, sans-serif;
+}
+
+.text_red {
+    color: red;
 }

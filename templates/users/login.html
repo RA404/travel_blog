@@ -2,9 +2,9 @@
 {% block title %}Login{% endblock %}
 {% block content %}
 {% load user_filters %}
-<div>
-    <h1>Login</h1>
-    <div>
+
+    <h1 class="title">Login</h1>
+    <div class="form-container">
         {% if form.errors %}
         {% for field in form %}
         {% for error in field.errors %}
@@ -28,12 +28,12 @@
             {% csrf_token %}
 
             {% for field in form %}
-            <div
-                    {% if field.field.required %}
-                    aria-required="true"
-                    {% else %}
-                    aria-required="false"
-                    {% endif %}
+            <fieldset class="form__input-container"
+                      {% if field.field.required %}
+                      aria-required="true"
+                      {% else %}
+                      aria-required="false"
+                      {% endif %}
             >
                 <label for="{{ field.id_for_label }}">
                     {{ field.label }}
@@ -49,15 +49,12 @@
                     </small>
                     {% endif %}
                 </div>
-            </div>
+            </fieldset>
             {% endfor %}
-            <div>
-                <button type="submit">Login</button>
-                <a href="{% url 'users:password_reset' %}">
-                  Forgot password?
-                </a>
-            </div>
+
+            <a class="link" href="{% url 'users:password_reset' %}">Forgot password?</a>
+            <button type="submit" class="form__button">Login</button>
         </form>
     </div>
-</div>
+
 {% endblock %}
