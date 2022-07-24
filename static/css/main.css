@@ -256,7 +256,7 @@
 
 .post-card__image {
     max-height: 500px;
-    max-width: 400px;
+    max-width: 100%;
     object-fit: scale-down;
     margin: 5px auto 5px auto;
 }
@@ -424,6 +424,39 @@
     padding: 15px;
 }
 
+/* switcher start */
+.switcher__items {
+    font-family: 'Roboto','Helvetica Neue', Arial, sans-serif;
+    font-size: 18px;
+    line-height: 24px;
+    list-style-type: none;
+    display: flex;
+    flex-direction: row;
+    background-color: #7806A0;
+    max-width: 100%;
+    box-sizing: border-box;
+    justify-content: center;
+    border-radius: 20px;
+}
+
+.switcher__item {
+    padding: 10px 20px;
+}
+
+.switcher__link {
+    text-decoration: none;
+    cursor: pointer;
+    color: #fff;
+}
+
+.switcher__link_active {
+    color: #FF74D5;
+    font-weight: bold;
+    cursor: default;
+}
+/* switcher end */
+
+/* media */
 @media (max-width: 576px) {
     .post-card {
         width: 300px;
