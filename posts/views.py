@@ -177,7 +177,7 @@ def post_like(request: HttpRequest, post_id: int) -> HttpResponse:
     if not already_like:
         Like.objects.create(user=request.user, post=post)
 
-    return redirect(request.META.get('HTTP_REFERER', 'travel_posts:main'))
+    return redirect('travel_posts:post_detail', post_id)
 
 
 @login_required(login_url='users:login')
@@ -185,4 +185,4 @@ def post_dislike(request: HttpRequest, post_id: int) -> HttpResponse:
     post = get_object_or_404(Post, pk=post_id)
     Like.objects.filter(user=request.user, post=post).delete()
 
-    return redirect(request.META.get('HTTP_REFERER', 'travel_posts:main'))
+    return redirect('travel_posts:post_detail', post_id)
