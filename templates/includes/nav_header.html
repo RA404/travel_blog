@@ -1,11 +1,20 @@
+{% if user.is_authenticated %}
 <nav class="menu">
     {% with request.resolver_match.view_name as view_name %}
+
     <ul class="menu__items">
-        {% if user.is_authenticated %}
         <li class="menu__item">
-            <a class="menu__link {% if view_name == 'travel_posts:post_create' %}menu__link_checked{% endif %}" href="{% url 'travel_posts:post_create' %}">Create post</a>
+            <a class="menu__link" href="{% url 'travel_posts:post_create' %}">Create post</a>
         </li>
-        {% endif %}
+        <li class="menu__item">
+            <a class="menu__link" href="{% url 'users:password_change' %}">change password</a>
+        </li>
+        <li class="menu__item">
+            <a class="menu__link" href="{% url 'users:logout' %}">logout</a>
+        </li>
     </ul>
+    <input id="menu__toggle" type="checkbox" />
+    <div class="menu__button"></div>
     {% endwith %}
 </nav>
+{% endif %}

@@ -101,11 +101,64 @@
 /* paginator finished */
 
 /*menu start*/
+.menu__button,
+.menu__button::before,
+.menu__button::after {
+  display: block;
+  background-color: #fff;
+  position: relative;
+  height: 4px;
+  width: 30px;
+  transition: transform 400ms cubic-bezier(0.23, 1, 0.32, 1);
+  border-radius: 2px;
+  top: 0px;
+  right: 0px;
+}
+
+.menu__button::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+}
+
+.menu__button::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+}
+
+#menu__toggle {
+    position: absolute;
+    z-index: 100;
+    width: 40px;
+    height: 100%;
+    top: 0;
+    right: 0;
+    cursor: pointer;
+    opacity: 0;
+}
+
+#menu__toggle:checked + .menu__button::before {
+  top: 0px;
+  transform: rotate(405deg);
+}
+
+#menu__toggle:checked + .menu__button {
+  background: rgba(255, 255, 255, 0);
+}
+
+#menu__toggle:checked + .menu__button::after {
+  top: 0px;
+  transform: rotate(-405deg);
+}
+
 .menu {
     display: flex;
     flex-direction: row;
     justify-content: center;
     margin: auto 0 auto 0;
+    align-items: center;
+    position: relative;
 }
 
 .menu__items {
@@ -132,6 +185,12 @@
 .menu__link_checked {
     color: #FF74D5;
     font-weight: bold;
+}
+
+.menu__container {
+    display: flex;
+    flex-direction: row;
+    justify-content: end;
 }
 /*menu finished*/
 
