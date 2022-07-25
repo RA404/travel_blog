@@ -486,6 +486,25 @@
     cursor: pointer;
     margin: 5px 0;
 }
+
+.form__input_file {
+    display: none;
+}
+
+.image-label {
+    display: block;
+    margin: 10px 0;
+}
+
+.button__choose-file {
+    width: 150px;
+    background-color: #08995B;
+    color: #fff;
+    cursor: pointer;
+    text-align: center;
+    padding: 10px;
+    border-radius: 20px;
+}
 /* form finished*/
 
 .link {
