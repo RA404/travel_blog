@@ -4,7 +4,7 @@
 {% load user_filters %}
 <div>
     <h1 class="title">Edit post</h1>
-    <div>
+    <div class="form-container">
         {% if form.errors %}
         {% for field in form %}
         {% for error in field.errors %}
@@ -29,13 +29,14 @@
             {% csrf_token %}
 
             {% for field in form %}
-            <div
+            <fieldset class="form__input-container"
                     {% if field.field.required %}
                     aria-required="true"
                     {% else %}
                     aria-required="false"
                     {% endif %}
             >
+                {% if field.field.widget.input_type != 'file' %}
                 <label for="{{ field.id_for_label }}">
                     {{ field.label }}
                     {% if field.field.required %}
@@ -50,9 +51,26 @@
                     </small>
                     {% endif %}
                 </div>
-            </div>
+                {% else %}
+                    <label for="{{ field.id_for_label }}" class="image-label">
+                        {{ field.label }}
+
+                        {% if field.field.required %}
+                            <span>*</span>
+                        {% endif %}
+
+                        {{ field|addclass:'form__input_file' }}
+                        <div class="button__choose-file">Choose file</div>
+                        {% if field.help_text %}
+                        <small id="{{ field.id_for_label }}-help">
+                            {{ field.help_text|safe }}
+                        </small>
+                        {% endif %}
+                    </label>
+                {% endif %}
+            </fieldset>
             {% endfor %}
-            <button type="submit">Save</button>
+            <button type="submit" class="form__button">Save</button>
         </form>
     </div>
 </div>
