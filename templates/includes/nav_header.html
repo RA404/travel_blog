@@ -1,6 +1,5 @@
 {% if user.is_authenticated %}
 <nav class="menu">
-    {% with request.resolver_match.view_name as view_name %}
 
     <ul class="menu__items">
         <li class="menu__item">
@@ -15,6 +14,6 @@
     </ul>
     <input id="menu__toggle" type="checkbox" />
     <div class="menu__button"></div>
-    {% endwith %}
+
 </nav>
 {% endif %}

@@ -14,11 +14,13 @@
     <div class="page">
         {% include 'includes/header.html' %}
         <main class="main">
+            {% include 'includes/menu.html' %}
             {% block content %}
             <p>there is no content :(</p>
             {% endblock %}
         </main>
         {% include 'includes/footer.html' %}
     </div>
+    <script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>
