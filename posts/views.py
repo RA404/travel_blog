@@ -1,7 +1,8 @@
 from django.contrib.auth.decorators import login_required
 from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
-from django.http import HttpResponse, HttpRequest
+from django.http import HttpResponse, HttpRequest, HttpResponseRedirect
+from django.urls import reverse
 from .variables import posts_per_page
 from typing import Dict
 from .models import Post, Country, User, Follow, Like
@@ -177,7 +178,10 @@ def post_like(request: HttpRequest, post_id: int) -> HttpResponse:
     if not already_like:
         Like.objects.create(user=request.user, post=post)
 
-    return redirect('travel_posts:post_detail', post_id)
+    return HttpResponseRedirect(
+        request.META.get('HTTP_REFERER'),
+        reverse('travel_posts:post_detail', kwargs={'post_id': post_id})
+    )
 
 
 @login_required(login_url='users:login')
@@ -185,4 +189,7 @@ def post_dislike(request: HttpRequest, post_id: int) -> HttpResponse:
     post = get_object_or_404(Post, pk=post_id)
     Like.objects.filter(user=request.user, post=post).delete()
 
-    return redirect('travel_posts:post_detail', post_id)
+    return HttpResponseRedirect(
+        request.META.get('HTTP_REFERER'),
+        reverse('travel_posts:post_detail', kwargs={'post_id': post_id})
+    )
